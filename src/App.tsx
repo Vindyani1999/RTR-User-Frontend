@@ -1,12 +1,10 @@
-import React from "react";
 import "./App.css";
-import Hello from "./test";
+import AppRouter from "./router";
 
 function App() {
   return (
     <div>
-      <h1>Hello World</h1>
-      <Hello name="Frontend" />
+      <AppRouter />
     </div>
   );
 }

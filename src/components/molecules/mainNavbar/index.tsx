@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   AppBar,
   Toolbar,
@@ -20,6 +20,7 @@ import { useNavigate } from "react-router-dom";
 import { ROUTES } from "../../../constants/routeConstants";
 import {
   appBarStyles,
+  appBarScrolledStyles,
   logoStyles,
   linkStyles,
   logoMiniStyles,
@@ -33,6 +34,7 @@ const Navbar: React.FC = () => {
   const isMobile = useMediaQuery("(max-width:700px)");
 
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
 
   const handleClickHome = () => {
     navigate(ROUTES.HOME);
@@ -45,9 +47,24 @@ const Navbar: React.FC = () => {
     setDrawerOpen(open);
   };
 
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 0) {
+        setScrolled(true);
+      } else {
+        setScrolled(false);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
   return (
     <Box>
-      <AppBar sx={appBarStyles} elevation={0}>
+      <AppBar sx={scrolled ? appBarScrolledStyles : appBarStyles} elevation={0}>
         <Toolbar>
           {isMobile ? (
             <Box

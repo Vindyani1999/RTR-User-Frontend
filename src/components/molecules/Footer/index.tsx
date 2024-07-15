@@ -1,4 +1,3 @@
-// Footer.tsx
 import React from "react";
 import { Box, Grid, Typography, Link, IconButton } from "@mui/material";
 import FacebookIcon from "@mui/icons-material/Facebook";

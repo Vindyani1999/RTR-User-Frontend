@@ -7,7 +7,7 @@ import ImageCarousel from "../../molecules/ImageCarousel";
 import Image1 from "../../../assets/icons/HomePage/home.png";
 import Image2 from "../../../assets/icons/HomePage/home2.png";
 import Image3 from "../../../assets/icons/HomePage/home3.jpeg";
-import { homePageContainer } from "./styles";
+import { homePageContainer } from "../HomePage/styles";
 
 const slides = [{ src: Image1 }, { src: Image2 }, { src: Image3 }];
 
@@ -21,7 +21,7 @@ const HomePage: React.FC = () => {
     <Box sx={homePageContainer}>
       <Navbar />
       <ImageCarousel
-        isHomePage={true}
+        isHomePage={false}
         slides={slides}
         overlayText={overlayText}
         overlayDescription={overlayDescriptionText}

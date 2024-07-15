@@ -1,4 +1,8 @@
 import { createTheme } from "@mui/material/styles";
+import Raleway from "../assets/fonts/Raleway-VariableFont_wght.ttf";
+import RobotoMedium from "../assets/fonts/Roboto-Medium.ttf";
+import RobotoBold from "../assets/fonts/Roboto-Bold.ttf";
+
 export enum SCREENS {
   XS = 0,
   SM = 640,
@@ -14,10 +18,11 @@ const theme = createTheme({
   palette: {
     primary: {
       main: "#DC5F00",
-      light:"#ffffff"
+      light: "#ffffff",
     },
     secondary: {
       main: "#373A40",
+      dark:"#F0F0F0",
     },
   },
 
@@ -30,7 +35,38 @@ const theme = createTheme({
       xl: SCREENS.XL,
     },
   },
+
+  typography: {
+    fontFamily: "Raleway, Roboto, sans-serif",
+  },
+
+  components: {
+    MuiCssBaseline: {
+      styleOverrides: `
+        @font-face {
+          font-family: 'Raleway';
+          font-style: normal;
+          font-display: swap;
+          font-weight: 400;
+          src: url(${Raleway}) format('truetype');
+        }
+        @font-face {
+          font-family: 'Roboto';
+          font-style: normal;
+          font-display: swap;
+          font-weight: 500;
+          src: url(${RobotoMedium}) format('truetype');
+        }
+        @font-face {
+          font-family: 'Roboto';
+          font-style: normal;
+          font-display: swap;
+          font-weight: 700;
+          src: url(${RobotoBold}) format('truetype');
+        }
+      `,
+    },
+  },
 });
 
 export default theme;
-

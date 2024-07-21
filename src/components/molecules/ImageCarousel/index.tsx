@@ -37,7 +37,7 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({
     });
   };
 
-  const carouselHeight = isHomePage ? "710px" : "300px";
+  const carouselHeight = isHomePage ? "770px" : "300px";
   const overlayTextSize = isHomePage
     ? { xs: 30, sm: 35, md: 45, lg: 55, xl: 60 }
     : { xs: 20, sm: 25, md: 28, lg: 30, xl: 32 };

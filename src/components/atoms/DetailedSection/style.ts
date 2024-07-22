@@ -7,7 +7,7 @@ export const mainContainer: SxProps = {
   flexDirection: "row",
   position: "relative",
   width: "100%",
-  borderLeft: "2px solid orange", // Added border-left for mainContainer
+  overflow: "hidden", // Ensuring content doesn't overflow
 };
 
 export const mainDetailedContainer: SxProps = {
@@ -15,6 +15,9 @@ export const mainDetailedContainer: SxProps = {
   flexDirection: "column",
   width: "100%",
   justifyContent: "center",
+  p: 3,
+  boxSizing: "border-box",
+  pr:2
 };
 
 export const descriptionTextContainer: SxProps = {
@@ -23,14 +26,15 @@ export const descriptionTextContainer: SxProps = {
   justifyContent: "flex-start",
   flexDirection: "column",
   pl: { xs: 2, sm: 3, md: 5 },
-  ml: { xs: 3, sm: 5, md: 10 },
+  ml: { xs: 1, sm: 2, md: 5 },
   borderLeft: "4px solid orange",
+  boxSizing: "border-box",
 };
 
 export const titleText: SxProps = {
   fontWeight: "bold",
   fontSize: { xs: "2rem", sm: "2.5rem", md: "3rem" },
-  marginBottom: "20px",
+  marginBottom: "30px",
   textAlign: "center",
   fontFamily: 'Raleway-bold, sans-serif',
   ml: { xs: 3, sm: 5, md: 10 },
@@ -56,13 +60,11 @@ export const iconStyle: SxProps = {
 };
 
 export const imageStyles: SxProps = {
-  position: "relative",
-  marginTop: "5px",
-  marginBottom: "5px",
-  width: { xs: "200px", sm: "250px", md: "350px", lg: "450px" },
-  height: { xs: "200px", sm: "250px", md: "350px", lg: "450px" },
+  width: "100%", // Ensures the image takes full width of the container
+  maxWidth: { xs: "200px", sm: "250px", md: "350px", lg: "380px", xl: "400px" }, // Max width to control size
+  height: "auto", // Maintain aspect ratio
   objectFit: "cover",
-  pr: 12,
-  pt: 8,
-  pb: 8,
+  mx: "auto", 
+  pt: 5,
+  pb: 5,
 };

@@ -16,7 +16,7 @@ const overlayDescriptionText =
   "Where Fine Food, Friends, and Family Come Together";
 const buttonText = "Reserve Now";
 
-const HomePage: React.FC = () => {
+const FeaturePage: React.FC = () => {
   return (
     <Box sx={homePageContainer}>
       <Navbar />
@@ -33,4 +33,4 @@ const HomePage: React.FC = () => {
   );
 };
 
-export default HomePage;
+export default FeaturePage;

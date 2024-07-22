@@ -20,6 +20,7 @@ const HomePage = () => {
       description={description}
       imageUrl={AboutImage}
       bgColor={bgColor}
+      isFlipped={true}
     />
   );
 };

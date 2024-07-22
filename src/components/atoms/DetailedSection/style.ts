@@ -7,17 +7,32 @@ export const mainContainer: SxProps = {
   flexDirection: "row",
   position: "relative",
   width: "100%",
-  overflow: "hidden", // Ensuring content doesn't overflow
+  overflow: "hidden", 
+  pt: { xs: 2, sm: 1, md: 2, xl: 3 },
+  pb: { xs: 2, sm: 1, md: 2, xl: 3 },
+
 };
 
 export const mainDetailedContainer: SxProps = {
+  justifyContent: "center",
+  boxSizing: "border-box",
+};
+
+export const textContainer: SxProps = {
   display: "flex",
   flexDirection: "column",
-  width: "100%",
+  width: {lg:"60%", xl:"70%"}, // Adjust the width of the text column
   justifyContent: "center",
-  p: 3,
+  
+};
+
+export const imageContainer: SxProps = {
+  display: "flex",
+  flexDirection: "column",
+  width: {lg:"40%", xl:"30%"}, // Adjust the width of the image column
+  justifyContent: "center",
+  alignItems: "center", // Center the image within the column
   boxSizing: "border-box",
-  pr:2
 };
 
 export const descriptionTextContainer: SxProps = {
@@ -25,10 +40,11 @@ export const descriptionTextContainer: SxProps = {
   alignItems: "flex-start",
   justifyContent: "flex-start",
   flexDirection: "column",
-  pl: { xs: 2, sm: 3, md: 5 },
-  ml: { xs: 1, sm: 2, md: 5 },
+  pl: { xs: 2, sm: 3, md: 5, lg:4, xl: 5 },
+  ml: { xs: 1, sm: 2, md: 8, lg:7, xl: 10 },
   borderLeft: "4px solid orange",
   boxSizing: "border-box",
+  pr: { xs: 0, sm: 3, md: 3, lg:4, xl: 6 },
 };
 
 export const titleText: SxProps = {
@@ -36,12 +52,12 @@ export const titleText: SxProps = {
   fontSize: { xs: "2rem", sm: "2.5rem", md: "3rem" },
   marginBottom: "30px",
   textAlign: "center",
-  fontFamily: 'Raleway-bold, sans-serif',
-  ml: { xs: 3, sm: 5, md: 10 },
+  fontFamily: 'Raleway, sans-serif',
+  ml: { xs: 3, sm: 5, md: 8, lg: 10, xl: 10 },
 };
 
 export const descriptionText: SxProps = {
-  fontSize: { xs: "0.9rem", sm: "1rem", md: "1.2rem" },
+  fontSize: { xs: "0.6rem", sm: "1rem", md: "1.2rem", xl: "1.5rem" },
   marginBottom: "20px",
   textAlign: "justify",
 };
@@ -61,10 +77,11 @@ export const iconStyle: SxProps = {
 
 export const imageStyles: SxProps = {
   width: "100%", // Ensures the image takes full width of the container
-  maxWidth: { xs: "200px", sm: "250px", md: "350px", lg: "380px", xl: "400px" }, // Max width to control size
+  maxWidth: { xs: "150px", sm: "200px", md: "350px", lg: "380px", xl: "400px" }, // Max width to control size
   height: "auto", // Maintain aspect ratio
   objectFit: "cover",
   mx: "auto", 
-  pt: 5,
-  pb: 5,
+  pt: { xs: 2, sm: 2, md: 4, lg: 5, xl: 5 },
+  pb: { xs: 2, sm: 2, md: 4, lg: 5, xl: 5 },
+  pr:{ xs: 1, sm: 2, md: 2, lg: 4, xl: 5 },
 };

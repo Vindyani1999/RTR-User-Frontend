@@ -6,11 +6,11 @@ const lightColor = theme.palette.primary.light;
 
 export const overlayContainer: SxProps<Theme> = {
   position: "absolute",
-  top: "45%",
+  top: { xs: "35%", sm: "45%", md: "45%", lg: "45%", xl: "45%" },
   left: "50%",
   transform: "translate(-50%, -50%)",
   textAlign: "center",
-  zIndex: 2,
+  zIndex: 1,
   color: "#fff",
 };
 
@@ -69,3 +69,5 @@ export const imageOverlayStyle: SxProps<Theme> = {
     zIndex: 1,
   },
 };
+
+

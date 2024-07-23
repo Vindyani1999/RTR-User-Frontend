@@ -6,7 +6,7 @@ const lightColor = theme.palette.primary.light;
 
 export const overlayContainer: SxProps<Theme> = {
   position: "absolute",
-  top: { xs: "35%", sm: "45%", md: "45%", lg: "45%", xl: "45%" },
+  top: { xs: "40%", sm: "45%", md: "45%", lg: "45%", xl: "45%" },
   left: "50%",
   transform: "translate(-50%, -50%)",
   textAlign: "center",
@@ -16,19 +16,19 @@ export const overlayContainer: SxProps<Theme> = {
 
 export const overlayTextStyle: SxProps<Theme> = {
   fontFamily: 'Raleway, sans-serif',
-  fontSize: { xs: 24, sm: 28, md: 40, lg: 55, xl: 60 },
+  fontSize: { xs: 16, sm: 28, md: 40, lg: 55, xl: 60 },
   fontWeight: "bold",
 };
 
 export const overlayDescriptionStyle: SxProps<Theme> = {
   fontFamily: 'Raleway, sans-serif',
-  fontSize: { xs: 12, sm: 18, md: 20, lg: 25, xl: 22 },
-  mb: 5,
+  fontSize: { xs: 10, sm: 18, md: 20, lg: 25, xl: 22 },
+  mb: { xs: 1, sm: 3, md: 4, lg: 5, xl: 5 },
 };
 
 export const overlayButton: SxProps<Theme> = {
     fontFamily: 'Raleway, sans-serif',
-    fontSize:{xs:12, sm:14, md:14, lg:16, xl:16},
+    fontSize:{xs:11, sm:14, md:14, lg:16, xl:16},
     color: lightColor,
     textDecoration:"none",
     "&:hover": {
@@ -39,7 +39,7 @@ export const overlayButton: SxProps<Theme> = {
 
 export const overlayButtonContainer: SxProps<Theme> = {
 fontFamily: 'Raleway, sans-serif',
-  width: 130,
+  width: {xs:90, sm:100, md:110, lg:130, xl:130},
   padding: 1,
   borderRadius: 2,
   backgroundColor: primaryColor,

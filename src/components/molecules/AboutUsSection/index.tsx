@@ -12,15 +12,13 @@ const HomePage = () => {
     the mood for a romantic dinner, a family gathering, or a casual meal
     with friends, book your table today and let us take care of the rest!
   `;
-  const bgColor = "transparent";
 
   return (
     <AboutSection
       title={title}
       description={description}
       imageUrl={AboutImage}
-      bgColor={bgColor}
-      isFlipped={true}
+      isFlipped={false}
     />
   );
 };

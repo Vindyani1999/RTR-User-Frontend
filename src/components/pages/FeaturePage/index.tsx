@@ -8,10 +8,12 @@ import Image1 from "../../../assets/icons/HomePage/home.png";
 import Image2 from "../../../assets/icons/HomePage/home2.png";
 import Image3 from "../../../assets/icons/HomePage/home3.jpeg";
 import { homePageContainer } from "../HomePage/styles";
+import FeatureContainer from "../../organisms/FeatureContainer";
+import { featureMainContainer } from "./styles";
 
 const slides = [{ src: Image1 }, { src: Image2 }, { src: Image3 }];
 
-const overlayText = "Online Table Reservation";
+const overlayText = "Features";
 const overlayDescriptionText =
   "Where Fine Food, Friends, and Family Come Together";
 const buttonText = "Reserve Now";
@@ -27,7 +29,9 @@ const FeaturePage: React.FC = () => {
         overlayDescription={overlayDescriptionText}
         buttonText={buttonText}
       />
-      <Box sx={{ pt: 150 }}></Box>
+      <Box sx={featureMainContainer}>
+        <FeatureContainer />
+      </Box>
       <Footer />
     </Box>
   );

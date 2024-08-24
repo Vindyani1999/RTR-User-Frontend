@@ -8,7 +8,7 @@ import Image1 from "../../../assets/icons/HomePage/home.png";
 import Image2 from "../../../assets/icons/HomePage/home2.png";
 import Image3 from "../../../assets/icons/HomePage/home3.jpeg";
 import { homePageContainer } from "../HomePage/styles";
-import TableSetup from "../../atoms/TableSetup";
+import TableSetup from "../../molecules/TableSetup";
 import { tableMainContainer } from "./styles";
 
 const slides = [{ src: Image1 }, { src: Image2 }, { src: Image3 }];

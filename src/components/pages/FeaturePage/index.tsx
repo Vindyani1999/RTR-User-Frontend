@@ -5,13 +5,11 @@ import Footer from "../../molecules/Footer";
 import ImageCarousel from "../../molecules/ImageCarousel";
 
 import Image1 from "../../../assets/icons/HomePage/home.png";
-import Image2 from "../../../assets/icons/HomePage/home2.png";
-import Image3 from "../../../assets/icons/HomePage/home3.jpeg";
 import { homePageContainer } from "../HomePage/styles";
 import FeatureContainer from "../../organisms/FeatureContainer";
 import { featureMainContainer } from "./styles";
 
-const slides = [{ src: Image1 }, { src: Image2 }, { src: Image3 }];
+const slides = [{ src: Image1 }];
 
 const overlayText = "Features";
 const overlayDescriptionText =

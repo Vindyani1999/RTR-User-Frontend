@@ -47,13 +47,23 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({
 
   const overlayTextMargin = isHomePage ? 0 : 1;
 
+  // Define animation styles
+  const animationStyles = {
+    transition: "transform 0.5s ease-in-out",
+    transform: "translateX(0)",
+  };
+
   return (
     <Box sx={{ position: "relative" }}>
       <Carousel>
         {slides.map((slide, index) => (
           <Box
             key={index}
-            sx={{ ...imageOverlayStyle, height: carouselHeight }}
+            sx={{
+              ...imageOverlayStyle,
+              height: carouselHeight,
+              ...(isHomePage && animationStyles), // Apply animation only if isHomePage is true
+            }}
           >
             <Box
               component="img"
@@ -64,6 +74,9 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({
                 height: "auto",
                 maxHeight: carouselHeight,
                 objectFit: "cover",
+                ...(isHomePage && {
+                  animation: `slideAnimation ${slides.length * 2}s infinite`,
+                }), // Add animation to images only for the homepage
               }}
             />
           </Box>

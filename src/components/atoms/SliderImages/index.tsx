@@ -33,7 +33,7 @@ const SliderImage: React.FC<CarouselProps> = ({ children }) => {
           sx={{
             position: "relative",
             transition: "transform 8s ease-in-out",
-            transform: index === currentIndex ? "scale(1.3)" : "scale(1.0)",
+            transform: index === currentIndex ? "scale(1.1)" : "scale(1.0)",
           }}
         >
           {child}

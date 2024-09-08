@@ -4,7 +4,7 @@ import { ROUTES } from "../constants/routeConstants";
 import MainContainer from "../components/organisms/MainContainer";
 import HomePage from "../components/pages/HomePage";
 import FeaturePage from "../components/pages/FeaturePage";
-import TableSetup from "../components/pages/TableSetup";
+import TablePage from "../components/pages/TablesPage";
 
 const AppRouter: React.FC = () => {
   return (
@@ -13,7 +13,7 @@ const AppRouter: React.FC = () => {
         <Routes>
           <Route path={ROUTES.HOME} element={<HomePage />} />
           <Route path={ROUTES.FEATURES} element={<FeaturePage />} />
-          <Route path={ROUTES.TABLE_SETUP} element={<TableSetup />} />
+          <Route path={ROUTES.TABLE_SETUP} element={<TablePage />} />
         </Routes>
       </MainContainer>
     </Router>

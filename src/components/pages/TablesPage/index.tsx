@@ -8,8 +8,8 @@ import Image1 from "../../../assets/icons/HomePage/home.png";
 import Image2 from "../../../assets/icons/HomePage/home2.png";
 import Image3 from "../../../assets/icons/HomePage/home3.jpeg";
 import { homePageContainer } from "../HomePage/styles";
-import TableSetup from "../../molecules/TableSetup";
-import { tableMainContainer } from "./styles";
+//import TableSetup from "../../organisms/TableSetup";
+import SVG from "../../../assets/icons/svg.svg";
 
 const slides = [{ src: Image1 }, { src: Image2 }, { src: Image3 }];
 
@@ -28,8 +28,8 @@ const TablePage: React.FC = () => {
         overlayDescription={overlayDescriptionText}
         buttonText={buttonText}
       />
-      <Box sx={tableMainContainer}>
-        <TableSetup />
+      <Box>
+        <SVG width={100} height={100} color="blue" />
       </Box>
       <Footer />
     </Box>

@@ -66,10 +66,7 @@ export const stepIndicatorContainer: SxProps<Theme> = {
 };
 
 export const buttonsStyle: SxProps<Theme> = {
-  flexDirection: "column",
-  alignItems: "center",
-  textAlign: "center",
-  justifyContent: "center",
+  flexDirection: "row",
   borderRadius: "12px",
 };
 

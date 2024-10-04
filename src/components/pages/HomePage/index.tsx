@@ -23,6 +23,7 @@ const HomePage: React.FC = () => {
       <Navbar />
       <ImageCarousel
         isHomePage={true}
+        isBookNowPage={false}
         slides={slides}
         overlayText={overlayText}
         overlayDescription={overlayDescriptionText}

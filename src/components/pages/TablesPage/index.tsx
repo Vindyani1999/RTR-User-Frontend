@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Box } from "@mui/material";
 import Navbar from "../../molecules/mainNavbar";
 import Footer from "../../molecules/Footer";
@@ -18,18 +18,23 @@ const overlayDescriptionText = "";
 const buttonText = "";
 
 const TablePage: React.FC = () => {
+  const [selectedTable, setSelectedTable] = useState<any>(null);
   return (
     <Box sx={homePageContainer}>
       <Navbar />
       <ImageCarousel
         isHomePage={false}
+        isBookNowPage={false}
         slides={slides}
         overlayText={overlayText}
         overlayDescription={overlayDescriptionText}
         buttonText={buttonText}
       />
       <Box sx={tableMainContainer}>
-        <TableSetup />
+        <TableSetup
+          selectedTable={selectedTable}
+          onTableSelect={setSelectedTable}
+        />
       </Box>
       <Footer />
     </Box>

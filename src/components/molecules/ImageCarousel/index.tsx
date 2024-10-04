@@ -21,6 +21,7 @@ interface ImageCarouselProps {
   overlayDescription: string;
   buttonText: string;
   isHomePage: boolean;
+  isBookNowPage: boolean;
 }
 
 const ImageCarousel: React.FC<ImageCarouselProps> = ({
@@ -29,6 +30,7 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({
   overlayDescription,
   buttonText,
   isHomePage,
+  isBookNowPage,
 }) => {
   const handleArrowClick = () => {
     window.scrollBy({
@@ -39,6 +41,8 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({
 
   const carouselHeight = isHomePage
     ? { xs: "180px", sm: "450px", md: "600px", lg: "710px", xl: "770px" }
+    : isBookNowPage
+    ? { xs: "100px", sm: "200px", md: "250px", lg: "200px", xl: "200px" }
     : { xs: "100px", sm: "200px", md: "250px", lg: "300px", xl: "300px" };
 
   const overlayTextSize = isHomePage

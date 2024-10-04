@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Box, Button, Typography } from "@mui/material";
+import { Box, Button } from "@mui/material";
 import Navbar from "../../molecules/mainNavbar";
 import Footer from "../../molecules/Footer";
 import {
@@ -26,6 +26,7 @@ import MenuDialog from "../../atoms/MenuDialogPopup";
 import CartPopup from "../../atoms/CartItemPopup";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+import { FormData } from "../../organisms/PersonalDetailsForm";
 
 const slides = [{ src: Image1 }, { src: Image2 }, { src: Image3 }];
 
@@ -38,10 +39,14 @@ const BookNowPage: React.FC = () => {
   const [selectedDate, setSelectedDate] = useState<Dayjs | null>(null);
   const [startTime, setStartTime] = useState<string | null>(null);
   const [endTime, setEndTime] = useState<string | null>(null);
-  const [error, setError] = useState<string | null>(null);
-  const [personalDetails, setPersonalDetails] = useState<any>(null);
+  const [personalDetails, setPersonalDetails] = useState<FormData>({
+    firstName: "",
+    lastName: "",
+    phoneNumber: "",
+    address: "",
+    numberOfPeople: undefined,
+  });
   const [selectedTable, setSelectedTable] = useState<any>(null);
-  const [confirmDetails, setConfirmDetails] = useState<boolean>(false);
   const [selectedMenuItems, setSelectedMenuItems] = useState<any[]>([]);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [quantities, setQuantities] = useState<{ [key: number]: number }>({});
@@ -70,13 +75,10 @@ const BookNowPage: React.FC = () => {
       if (selectedTable) {
         if (currentStep < steps.length - 1) {
           setCurrentStep(currentStep + 1);
-        } else {
-          setError("Please select a table.");
         }
       }
     } else if (currentStep === 3) {
       if (selectedMenuItems.length > 0) {
-        setError(null);
         if (currentStep < steps.length - 1) {
           setCurrentStep(currentStep + 1);
         }
@@ -92,16 +94,15 @@ const BookNowPage: React.FC = () => {
     }
   };
 
-  const handlePersonalDetailsSubmit = (details: any) => {
+  const handlePersonalDetailsSubmit = (details: FormData) => {
+    console.log(details);
     setPersonalDetails(details);
-    setConfirmDetails(true);
   };
 
   const handleMenuNext = () => {
     if (selectedMenuItems.length > 0) {
       handleNextStep();
     } else {
-      setError("Please select at least one menu item.");
     }
   };
   const handleDialogConfirm = () => {
@@ -160,6 +161,7 @@ const BookNowPage: React.FC = () => {
             <Box>
               <PersonalDetailsForm
                 onPersonalDetailsSubmit={handlePersonalDetailsSubmit}
+                data={personalDetails}
               />
             </Box>
           </Box>
@@ -194,11 +196,11 @@ const BookNowPage: React.FC = () => {
           </Box>
         )}
         <Box sx={errorStyle}>
-          {error && (
+          {/* {error && (
             <Typography color="error" variant="body2" mt={2}>
               {error}
             </Typography>
-          )}
+          )} */}
         </Box>
         <Box
           sx={{
@@ -234,7 +236,12 @@ const BookNowPage: React.FC = () => {
           <Button
             variant="contained"
             onClick={handleNextStep}
-            disabled={!isDateTimeConfirmed}
+            disabled={
+              (currentStep === 0 && !isDateTimeConfirmed) ||
+              (currentStep === 1 && !personalDetails) ||
+              (currentStep === 2 && !selectedTable) ||
+              (currentStep === 3 && selectedMenuItems.length === 0)
+            }
             sx={{
               ml: 1,
               backgroundColor: "darkorange",

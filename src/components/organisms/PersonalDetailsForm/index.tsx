@@ -1,7 +1,9 @@
-import React from "react";
-import { Box, TextField, Grid, Button } from "@mui/material";
+import React, { useEffect, useState } from "react";
+import { Box, TextField, Grid } from "@mui/material";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as yup from "yup";
+import GradientButton from "../../atoms/GradientButton";
+import { PersonalDetailsSubmitButtonStyle } from "./styles";
 
 // Define Yup validation schema
 const schema = yup.object({
@@ -18,39 +20,44 @@ const schema = yup.object({
     .min(1, "At least one person is required"),
 });
 
-interface FormData {
+export interface FormData {
   firstName: string;
   lastName: string;
   phoneNumber: string;
   address: string;
-  numberOfPeople: number;
+  numberOfPeople?: number | undefined;
 }
 
 interface PersonalDetailsFormProps {
   onPersonalDetailsSubmit: (details: FormData) => void;
+  data: FormData;
 }
 
 const PersonalDetailsForm: React.FC<PersonalDetailsFormProps> = ({
   onPersonalDetailsSubmit,
+  data,
 }) => {
-  const initialValues: FormData = {
-    firstName: "",
-    lastName: "",
-    phoneNumber: "",
-    address: "",
-    numberOfPeople: 1,
-  };
+  const [formData, setFormData] = useState<FormData>(data);
+
+  useEffect(() => {
+    setFormData(data);
+  }, [data]);
 
   return (
-    <Box sx={{ maxWidth: 600, mx: "auto" }}>
+    <Box
+      sx={{
+        maxWidth: 600,
+        mx: "auto",
+      }}
+    >
       <Formik
-        initialValues={initialValues}
+        initialValues={formData}
         validationSchema={schema}
         onSubmit={(values) => {
           onPersonalDetailsSubmit(values);
         }}
       >
-        {({ errors, touched }) => (
+        {({ errors, touched, values }) => (
           <Form>
             <Grid container spacing={1}>
               <Grid item xs={12} sm={6}>
@@ -61,6 +68,7 @@ const PersonalDetailsForm: React.FC<PersonalDetailsFormProps> = ({
                       fullWidth
                       label="First Name"
                       variant="outlined"
+                      value={values.firstName}
                       error={touched.firstName && !!errors.firstName}
                       InputProps={{ sx: { height: 50 } }}
                       helperText={<ErrorMessage name="firstName" />}
@@ -76,6 +84,7 @@ const PersonalDetailsForm: React.FC<PersonalDetailsFormProps> = ({
                       fullWidth
                       label="Last Name"
                       variant="outlined"
+                      value={values.lastName}
                       error={touched.lastName && !!errors.lastName}
                       InputProps={{ sx: { height: 50 } }}
                       helperText={<ErrorMessage name="lastName" />}
@@ -91,6 +100,7 @@ const PersonalDetailsForm: React.FC<PersonalDetailsFormProps> = ({
                       fullWidth
                       label="Phone Number"
                       variant="outlined"
+                      value={values.phoneNumber}
                       error={touched.phoneNumber && !!errors.phoneNumber}
                       InputProps={{ sx: { height: 50 } }}
                       helperText={<ErrorMessage name="phoneNumber" />}
@@ -107,6 +117,7 @@ const PersonalDetailsForm: React.FC<PersonalDetailsFormProps> = ({
                       fullWidth
                       label="Number of People"
                       variant="outlined"
+                      value={values.numberOfPeople}
                       error={touched.numberOfPeople && !!errors.numberOfPeople}
                       InputProps={{ sx: { height: 50 } }}
                       helperText={<ErrorMessage name="numberOfPeople" />}
@@ -122,6 +133,7 @@ const PersonalDetailsForm: React.FC<PersonalDetailsFormProps> = ({
                       fullWidth
                       label="Address"
                       variant="outlined"
+                      value={values.address}
                       error={touched.address && !!errors.address}
                       InputProps={{ sx: { height: 50 } }}
                       helperText={<ErrorMessage name="address" />}
@@ -131,11 +143,13 @@ const PersonalDetailsForm: React.FC<PersonalDetailsFormProps> = ({
               </Grid>
             </Grid>
 
-            {/* Submit button */}
-            <Box mt={1}>
-              <Button type="submit" variant="contained" color="primary">
-                Confirm Your Details
-              </Button>
+            <Box sx={PersonalDetailsSubmitButtonStyle}>
+              <GradientButton
+                label="Confirm Your Details"
+                sx={{
+                  mt: 2,
+                }}
+              />
             </Box>
           </Form>
         )}

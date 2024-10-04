@@ -29,3 +29,9 @@ export const stepConnector: SxProps<Theme> = {
   "& .MuiStepLabel-root": stepLabel,
   "& .MuiStepIcon-root": stepIcon,
 };
+
+export const PersonalDetailsSubmitButtonStyle = {
+  display: "flex",
+  justifyContent: "center",
+  mt: 3,
+};

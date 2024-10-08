@@ -1,5 +1,4 @@
-// MenuCard.tsx (assuming the file path)
-import React from "react";
+import React, { useState } from "react";
 import {
   Box,
   Card,
@@ -33,6 +32,8 @@ const MenuCard: React.FC<MenuCardProps> = ({
   onQuantityChange,
   category,
 }) => {
+  const [hovered, setHovered] = useState(false);
+
   return (
     <Card
       sx={{
@@ -41,16 +42,29 @@ const MenuCard: React.FC<MenuCardProps> = ({
         boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.2)",
         borderRadius: 2,
         backgroundColor: "#f9f9f9",
+        //position: "relative", // for positioning the front and back
+        //perspective: "1000px", // enables the 3D effect
       }}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
     >
-      <img
-        height="100"
-        src={image}
-        alt={name}
-        style={{ marginTop: 15, borderRadius: 8 }}
-      />
-      <CardContent sx={{ textAlign: "center" }}>
-        <Box sx={{ textAlign: "left" }}>
+      <Box
+        sx={{
+          position: "relative",
+          width: "250px",
+          height: hovered ? "0px" : "150px",
+          backfaceVisibility: "hidden", // hides the back side when not hovered
+          transform: hovered ? "rotateY(180deg)" : "rotateY(0deg)",
+          transition: "transform 0.6s", // smooth transition for rotation
+        }}
+      >
+        <img
+          height="110"
+          src={image}
+          alt={name}
+          style={{ marginTop: 15, borderRadius: 8 }}
+        />
+        <CardContent sx={{ textAlign: "left" }}>
           <Typography variant="h6">{name}</Typography>
           <Divider sx={{ backgroundColor: "orange", marginY: 1 }} />
           <Typography variant="body2" sx={{ fontSize: "0.8rem", mt: -0.5 }}>
@@ -76,18 +90,26 @@ const MenuCard: React.FC<MenuCardProps> = ({
               </span>
             ))}
           </Typography>
-          <Typography
-            sx={{
-              fontSize: "1.2rem",
-              fontWeight: "bold",
-              mt: 1,
-            }}
-          >
-            Rs.{price}
-          </Typography>
-        </Box>
-        {/* Quantity Selector */}
-        <Box sx={{ display: "flex", alignItems: "center" }}>
+        </CardContent>
+      </Box>
+
+      <Box
+        sx={{
+          position: "relative",
+          height: hovered ? "230px" : "100%",
+          backfaceVisibility: "hidden", // hides the front side when not hovered
+          transform: hovered ? "rotateY(0deg)" : "rotateY(180deg)",
+          transition: "transform 0.6s", // smooth transition for rotation
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
+          padding: 2,
+          backgroundColor: "#a29d9d",
+        }}
+      >
+        {/* Back Side with Quantity and Add to Cart */}
+        <Box sx={{ display: "flex", alignItems: "center", mb: 1 }}>
           <IconButton
             onClick={() => onQuantityChange(false)}
             disabled={quantity === 0}
@@ -105,13 +127,14 @@ const MenuCard: React.FC<MenuCardProps> = ({
           disabled={quantity === 0}
           sx={{
             textAlign: "center",
-            background: "linear-gradient(45deg, darkorange, darkred)", // gradient background
-            color: "#fff", // text color white
-            padding: "6px 12px", // padding inside the button
-            borderRadius: "8px", // rounded corners for button
-            boxShadow: "3px 3px 3px rgba(0, 0, 0, 0.2)", // shadow effect
+            background: "linear-gradient(45deg, darkorange, darkred)",
+            opacity: quantity === 0 ? 0.8 : 1,
+            color: "#fff",
+            padding: "6px 12px",
+            borderRadius: "8px",
+            boxShadow: "3px 3px 3px rgba(0, 0, 0, 0.2)",
             "&:hover": {
-              background: "linear-gradient(45deg, orange, red)", // hover effect
+              background: "linear-gradient(45deg, orange, red)",
             },
           }}
         >
@@ -119,11 +142,11 @@ const MenuCard: React.FC<MenuCardProps> = ({
             variant="button"
             sx={{ display: "flex", alignItems: "center", gap: 1, fontSize: 12 }}
           >
-            <ShoppingCartIcon sx={{ fontSize: 18 }} /> {/* Cart icon */}
+            <ShoppingCartIcon sx={{ fontSize: 18 }} />
             Add to Cart
           </Typography>
         </IconButton>
-      </CardContent>
+      </Box>
     </Card>
   );
 };

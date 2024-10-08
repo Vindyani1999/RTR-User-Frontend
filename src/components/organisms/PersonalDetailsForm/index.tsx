@@ -25,7 +25,7 @@ export interface FormData {
   lastName: string;
   phoneNumber: string;
   address: string;
-  numberOfPeople?: number | undefined;
+  numberOfPeople: number;
 }
 
 interface PersonalDetailsFormProps {

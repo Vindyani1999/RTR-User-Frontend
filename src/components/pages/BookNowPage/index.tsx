@@ -27,6 +27,7 @@ import CartPopup from "../../atoms/CartItemPopup";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import { FormData } from "../../organisms/PersonalDetailsForm";
+import TableDetails from "../../atoms/TableDetails";
 
 const slides = [{ src: Image1 }, { src: Image2 }, { src: Image3 }];
 
@@ -44,7 +45,7 @@ const BookNowPage: React.FC = () => {
     lastName: "",
     phoneNumber: "",
     address: "",
-    numberOfPeople: undefined,
+    numberOfPeople: 1,
   });
   const [selectedTable, setSelectedTable] = useState<any>(null);
   const [selectedMenuItems, setSelectedMenuItems] = useState<any[]>([]);
@@ -167,13 +168,35 @@ const BookNowPage: React.FC = () => {
           </Box>
         )}
 
-        <Box>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "flex-start",
+          }}
+        >
           {currentStep === 2 && (
-            <Box sx={{ ...tableDetailsContainer, pt: 0 }}>
+            <>
               <Box
                 sx={{
-                  transform: "scale(0.55)",
-                  maxHeight: "480px",
+                  position: "absolute",
+                  width: 800,
+                  height: 452,
+                  backgroundColor: "transparent",
+
+                  boxShadow: "0px 0px 10px 0px rgba(0,0,0,0.75)",
+
+                  left: "11%",
+                  top: "30.5%",
+                }}
+              />
+              <Box
+                sx={{
+                  transform: "scale(0.75)",
+                  maxHeight: "400px",
+                  mt: 1,
+                  mb: 8,
+                  display: "flex",
                 }}
               >
                 <TableSetup
@@ -181,6 +204,22 @@ const BookNowPage: React.FC = () => {
                   onTableSelect={setSelectedTable}
                 />
               </Box>
+            </>
+          )}
+          {currentStep === 2 && selectedTable && (
+            <Box
+              sx={{
+                transform: "scale(0.8)",
+                position: "absolute",
+
+                borderRadius: "8px",
+                left: "68%",
+                top: "28%",
+
+                width: "fit-content",
+              }}
+            >
+              <TableDetails selectedTable={selectedTable} />
             </Box>
           )}
         </Box>
@@ -238,8 +277,13 @@ const BookNowPage: React.FC = () => {
             onClick={handleNextStep}
             disabled={
               (currentStep === 0 && !isDateTimeConfirmed) ||
-              (currentStep === 1 && !personalDetails) ||
-              (currentStep === 2 && !selectedTable) ||
+              (currentStep === 1 &&
+                (!personalDetails.firstName ||
+                  !personalDetails.lastName ||
+                  !personalDetails.phoneNumber ||
+                  personalDetails.numberOfPeople <= 0)) ||
+              (currentStep === 2 &&
+                (!selectedTable || selectedTable.status === "Seated")) ||
               (currentStep === 3 && selectedMenuItems.length === 0)
             }
             sx={{

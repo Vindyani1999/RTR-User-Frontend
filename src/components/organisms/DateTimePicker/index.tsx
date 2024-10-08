@@ -55,12 +55,16 @@ const DateTimePicker: React.FC<DateTimePickerProps> = ({
       .format("hh:mm A")
   );
 
-  const endTimes = Array.from({ length: 23 }, (_, i) =>
-    dayjs()
-      .hour(10 + Math.floor(i / 2))
-      .minute((i % 2) * 30)
-      .format("hh:mm A")
-  );
+  const generateEndTimes = (startTime: string | null) => {
+    if (!startTime) return [];
+    const start = dayjs(startTime, "hh:mm A");
+    return Array.from({ length: 23 }, (_, i) => {
+      const end = start.add((i + 1) * 30, "minute");
+      return end.format("hh:mm A");
+    }).filter(
+      (endTime) => dayjs(endTime, "hh:mm A").diff(start, "hour", true) <= 3
+    );
+  };
 
   const formik = useFormik({
     initialValues: {
@@ -75,17 +79,7 @@ const DateTimePicker: React.FC<DateTimePickerProps> = ({
         .required("Please select your reservation date.")
         .min(currentDate, "Date cannot be in the past."),
       startTime: Yup.string().required("Please select start time."),
-      endTime: Yup.string()
-        .required("Please select end time.")
-        .test(
-          "time-range",
-          "Maximum reserve time is 2 hours.",
-          function (value) {
-            const start = dayjs(this.parent.startTime, "hh:mm A");
-            const end = dayjs(value, "hh:mm A");
-            return end.diff(start, "hour", true) <= 2;
-          }
-        ),
+      endTime: Yup.string().required("Please select end time."),
     }),
     onSubmit: (values) => {
       console.log("Form values:", values);
@@ -95,6 +89,14 @@ const DateTimePicker: React.FC<DateTimePickerProps> = ({
       onDateTimeConfirm(values.selectedDate, values.startTime, values.endTime);
     },
   });
+
+  const menuProps = {
+    PaperProps: {
+      style: {
+        maxHeight: 150, // Controls the height of the dropdown (4 items at ~50px each)
+      },
+    },
+  };
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -137,6 +139,7 @@ const DateTimePicker: React.FC<DateTimePickerProps> = ({
                       formik.setFieldValue("startTime", e.target.value)
                     }
                     label="Start Time"
+                    MenuProps={menuProps}
                     error={Boolean(
                       formik.errors.startTime && formik.touched.startTime
                     )}
@@ -172,11 +175,12 @@ const DateTimePicker: React.FC<DateTimePickerProps> = ({
                       formik.setFieldValue("endTime", e.target.value)
                     }
                     label="End Time"
+                    MenuProps={menuProps}
                     error={Boolean(
                       formik.errors.endTime && formik.touched.endTime
                     )}
                   >
-                    {endTimes.map((time) => (
+                    {generateEndTimes(formik.values.startTime).map((time) => (
                       <MenuItem key={time} value={time}>
                         {time}
                       </MenuItem>

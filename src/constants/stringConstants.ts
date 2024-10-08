@@ -12,6 +12,15 @@ export const categories = [
   "Dinner",
   "Snacks",
   "Drinks",
-  "Desserts",
-  "Specials",
+  "Dessert",
+  "Special",
 ];
+
+export const tableTypeMapping = {
+  squareBig: "large (rectangular)",
+  squareMedium: "medium (square)",
+  roundMedium: "medium (round)",
+  roundBig: "large (round)",
+  roundSmall: "small (round)",
+  rectangle: "medium (rectangular)",
+};

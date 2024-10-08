@@ -85,7 +85,7 @@ const MenuItems: React.FC<MenuItemsProps> = ({
     >
       <Box
         sx={{
-          width: "80%",
+          width: "75%",
           overflowY: "auto",
           height: "48vh",
         }}
@@ -122,7 +122,7 @@ const MenuItems: React.FC<MenuItemsProps> = ({
           p: "20px 20px 20px 20px",
           border: "2px solid red",
           borderRadius: 4,
-          height: "48vh",
+          height: "40vh",
         }}
       >
         <Typography variant="h6" sx={{ mb: 1 }}>
@@ -200,7 +200,7 @@ const MenuItems: React.FC<MenuItemsProps> = ({
           <FormGroup>
             <Grid container>
               {categories.map((category) => (
-                <Grid item xs={6} key={category}>
+                <Grid item xs={4} key={category}>
                   <FormControlLabel
                     control={
                       <Checkbox

@@ -9,7 +9,10 @@ import {
   FormGroup,
   FormControlLabel,
   Checkbox,
+  Button,
+  IconButton,
 } from "@mui/material";
+import { Add, Remove } from "@mui/icons-material";
 import MenuCard from "../../atoms/MenuCard";
 import { menuItems } from "./mockData";
 import { categories } from "../../../constants/stringConstants";
@@ -21,6 +24,7 @@ interface MenuItemType {
   price: number;
   image: string;
   category: string[];
+  quantity?: number;
 }
 
 interface MenuItemsProps {
@@ -40,6 +44,7 @@ const MenuItems: React.FC<MenuItemsProps> = ({
   const [selectedCategory, setSelectedCategory] = useState<string[]>([]);
   const [priceRange, setPriceRange] = useState<number[]>([0, maxPrice]);
   const [quantities, setQuantities] = useState<{ [key: number]: number }>({});
+  const [cartItems, setCartItems] = useState<MenuItemType[]>([]); // Store selected items in cart
 
   const filteredItems = menuItems.filter((item) => {
     const matchesSearch = item.name
@@ -74,20 +79,167 @@ const MenuItems: React.FC<MenuItemsProps> = ({
     );
   };
 
+  const addToCart = (item: any) => {
+    const quantity = quantities[item.id] || 1;
+
+    const itemWithCategoryAsArray = {
+      ...item,
+      category: Array.isArray(item.category) ? item.category : [item.category],
+      quantity,
+    };
+
+    const existingItemIndex = cartItems.findIndex(
+      (cartItem) => cartItem.name === itemWithCategoryAsArray.name
+    );
+
+    if (existingItemIndex >= 0) {
+      setCartItems((prevCartItems) =>
+        prevCartItems.map((cartItem, index) =>
+          index === existingItemIndex
+            ? {
+                ...cartItem,
+                quantity: (cartItem.quantity || 1) + quantity,
+              }
+            : cartItem
+        )
+      );
+    } else {
+      setCartItems((prevCartItems) => [
+        ...prevCartItems,
+        itemWithCategoryAsArray,
+      ]);
+    }
+  };
+
+  const updateCartQuantity = (id: number, increment: boolean) => {
+    setCartItems((prevCartItems) =>
+      prevCartItems.map((item) =>
+        item.id === id
+          ? {
+              ...item,
+              quantity: Math.max(
+                (item.quantity || 1) + (increment ? 1 : -1),
+                1
+              ),
+            }
+          : item
+      )
+    );
+  };
+
+  const getTotalCost = () => {
+    return cartItems.reduce(
+      (total, item) => total + item.price * (item.quantity || 1),
+      0
+    );
+  };
+
   return (
-    <Box
-      sx={{
-        display: "flex",
-        flexDirection: "row",
-        pl: 3,
-        mt: 10,
-      }}
-    >
+    <Box sx={{ display: "flex", flexDirection: "row", pl: 3, mt: 10 }}>
+      {/* Cart Section */}
+      <Box
+        sx={{
+          position: "absolute",
+          width: "20%",
+          p: 2,
+          border: "2px solid gray",
+          borderRadius: 4,
+          maxHeight: "40vh",
+          overflowY: "auto",
+          zIndex: 1,
+          backgroundColor: "white",
+        }}
+      >
+        <Typography variant="h6">Cart Items</Typography>
+        {cartItems.length > 0 ? (
+          cartItems.map((item) => (
+            <Box
+              key={item.id}
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                //mb: 2,
+                p: 1,
+                borderBottom: "1px solid lightgray",
+              }}
+            >
+              <Box
+                component="img"
+                src={item.image}
+                alt={item.name}
+                sx={{
+                  width: 35,
+                  height: 35,
+                  borderRadius: "50%",
+                  objectFit: "cover",
+                  mr: 2,
+                }}
+              />
+              <Box sx={{ flexGrow: 1 }}>
+                <Typography sx={{ fontSize: 14 }}>{item.name}</Typography>
+                <Typography sx={{ fontSize: 12 }}>
+                  {item.quantity} x Rs.{item.price} = Rs.
+                  {item.price * (item.quantity || 1)}
+                </Typography>
+              </Box>
+              <Box sx={{ display: "flex", alignItems: "center" }}>
+                <IconButton
+                  onClick={() => updateCartQuantity(item.id, false)}
+                  size="small"
+                >
+                  <Remove
+                    sx={{
+                      fontSize: 14,
+                      bgcolor: "orange",
+                      borderRadius: "50%",
+                      padding: "1px",
+                    }}
+                  />
+                </IconButton>
+                <Typography sx={{ mx: 1, fontSize: 12 }}>
+                  {item.quantity}
+                </Typography>
+                <IconButton
+                  onClick={() => updateCartQuantity(item.id, true)}
+                  size="small"
+                >
+                  <Add
+                    sx={{
+                      fontSize: 14,
+                      bgcolor: "orange",
+                      borderRadius: "50%",
+                      padding: "1px",
+                    }}
+                  />
+                </IconButton>
+              </Box>
+            </Box>
+          ))
+        ) : (
+          <Typography>No items in cart</Typography>
+        )}
+
+        {/* Total cost */}
+        <Box sx={{ mt: 2, borderTop: "1px solid lightgray", pt: 2 }}>
+          <Typography variant="h6">Total: Rs.{getTotalCost()}</Typography>
+          <Button
+            variant="contained"
+            color="primary"
+            fullWidth
+            sx={{ mt: 2 }}
+            onClick={onNext}
+          >
+            Proceed to Checkout
+          </Button>
+        </Box>
+      </Box>
+
+      {/* Menu Items Section */}
       <Box
         sx={{
           width: "75%",
           overflowY: "auto",
-          height: "48vh",
+          height: "60vh",
         }}
       >
         <Grid container spacing={2}>
@@ -105,20 +257,18 @@ const MenuItems: React.FC<MenuItemsProps> = ({
                 onQuantityChange={(increment) =>
                   handleQuantityChange(item.id, increment)
                 }
-                onAddToCart={() => {
-                  const quantity = quantities[item.id] || 1;
-                  alert(`${quantity} x ${item.name} added to cart`);
-                }}
+                onAddToCart={() => addToCart(item)}
               />
             </Grid>
           ))}
         </Grid>
       </Box>
+
+      {/* Filter Section */}
       <Box
         sx={{
           width: "20%",
           mx: 2,
-          mb: -7,
           p: "20px 20px 20px 20px",
           border: "2px solid red",
           borderRadius: 4,
@@ -136,23 +286,23 @@ const MenuItems: React.FC<MenuItemsProps> = ({
           onChange={(e) => setSearchTerm(e.target.value)}
           sx={{
             mb: 2,
-            height: "40px", // Adjust the height as needed
-            borderRadius: "12px", // Increase the border radius
+            height: "40px",
+            borderRadius: "12px",
             "& .MuiOutlinedInput-root": {
-              borderRadius: "12px", // Ensure the input has the same border radius
+              borderRadius: "12px",
               "& fieldset": {
-                borderRadius: "12px", // Ensure the outline has the same border radius
+                borderRadius: "12px",
               },
               "&:hover fieldset": {
-                borderColor: "orange", // Optional: Change border color on hover
+                borderColor: "orange",
               },
             },
             "& .MuiInputBase-input": {
-              padding: "10px 12px", // Add padding to center the placeholder
-              textAlign: "center", // Center the text (including placeholder)
+              padding: "10px 12px",
+              textAlign: "center",
             },
             "& .MuiInputBase-input::placeholder": {
-              textAlign: "center", // Center the placeholder text
+              textAlign: "center",
             },
           }}
         />
@@ -175,26 +325,20 @@ const MenuItems: React.FC<MenuItemsProps> = ({
                 width: 20,
                 boxShadow: "0px 2px 2px 0px rgba(0,0,0,0.2)",
                 border: "2px solid orange",
-                backgroundColor: "orange", // Border color
-                borderRadius: "50%", // Rounded thumbs
-                "&:first-of-type": {
-                  borderColor: "orange",
-                },
-                "&:last-of-type": {
-                  borderColor: "red",
-                  backgroundColor: "red", // Right thumb border color
-                },
+                backgroundColor: "orange",
+                borderRadius: "50%",
               },
               "& .MuiSlider-track": {
                 background: "linear-gradient(to right, orange, red)",
-                borderColor: "transparent", // Remove the track border
+                borderColor: "transparent",
               },
               "& .MuiSlider-rail": {
-                backgroundColor: "#f11818aa", // Light grey for the rail
+                backgroundColor: "#f11818aa",
               },
             }}
           />
         </Box>
+
         <Typography variant="h6">Categories</Typography>
         <FormControl>
           <FormGroup>
@@ -209,32 +353,20 @@ const MenuItems: React.FC<MenuItemsProps> = ({
                         name={category}
                         sx={{
                           "&.Mui-checked": {
-                            color: "transparent", // Hide default tick color
+                            color: "transparent",
                             "&:before": {
-                              content: '""', // Create a pseudo-element for gradient
+                              content: '""',
                               display: "block",
                               position: "absolute",
                               width: "40%",
                               height: "40%",
                               border: "2.5px solid #363431",
                               background:
-                                "linear-gradient(to right, orange, red)", // Gradient for checked state
-                              borderRadius: "15%",
-                              opacity: 0.7, // Adjust opacity as needed
-                            },
-                            "&:after": {
-                              content: '"✓"', // Show tick mark
-                              position: "absolute",
-                              color: "#fff", // Tick color
-                              fontSize: "0.8rem", // Adjust size as needed
-                              left: "50%", // Center the tick
-                              top: "50%",
-                              transform: "translate(-50%, -50%)", // Center adjustment
+                                "linear-gradient(to right, orange, red)",
+                              borderRadius: "50%",
                               zIndex: 1,
-                              fontWeight: "bold", // Bold tick mark
                             },
                           },
-                          position: "relative", // Relative positioning for the checkbox
                         }}
                       />
                     }

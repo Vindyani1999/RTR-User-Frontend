@@ -99,7 +99,7 @@ const MenuCard: React.FC<MenuCardProps> = ({
           height: hovered ? "230px" : "100%",
           backfaceVisibility: "hidden", // hides the front side when not hovered
           transform: hovered ? "rotateY(0deg)" : "rotateY(180deg)",
-          transition: "transform 0.6s", // smooth transition for rotation
+          transition: hovered ? "transform 0.6s" : "none", // smooth transition for rotation
           display: "flex",
           flexDirection: "column",
           justifyContent: "center",

@@ -27,6 +27,7 @@ const commonBoxShadow = "0px 4px 10px rgba(0, 0, 0, 0.2)";
 const getTableSVG = (
   type: string,
   status: string,
+  price: number,
   isSelected: boolean,
   route: string
 ) => {
@@ -94,6 +95,7 @@ const TableSetup: React.FC<TableProps> = ({ selectedTable, onTableSelect }) => {
             {getTableSVG(
               table.type,
               table.status,
+              table.price,
               isSelected ?? false,
               location.pathname
             )}

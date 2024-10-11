@@ -41,7 +41,7 @@ export const menuItems = [
     type: "Snack",
     description: "fish samosa with tomato sauce",
     price: 60,
-    image: "path/to/samosas.jpg",
+    image: kottuImage,
     category: ["Snacks"],
   },
   {
@@ -49,7 +49,7 @@ export const menuItems = [
     name: "Parippu Wade",
     description: "Wade with onions and fried chilis.",
     price: 40,
-    image: "path/to/parippu-wade.jpg",
+    image: kottuImage,
     category: ["Snacks"],
   },
 
@@ -59,7 +59,7 @@ export const menuItems = [
 
     description: "fish cutlets with tomato sauce",
     price: 80,
-    image: "path/to/cutlets.jpg",
+    image: kottuImage,
     category: ["Snacks"],
   },
   {
@@ -68,7 +68,7 @@ export const menuItems = [
     type: "Beverage",
     description: "Tea with white or brown sugar.",
     price: 100,
-    image: "path/to/ceylon-tea.jpg",
+    image: kottuImage,
     category: ["Beverage"],
   },
   {

@@ -12,7 +12,7 @@ const schema = yup.object({
   phoneNumber: yup
     .string()
     .required("Phone number is required")
-    .matches(/^\d+$/, "Phone number must be digits only"),
+    .matches(/^\+?\d+$/, "Phone number must be a valid format "),
   address: yup.string().required("Address is required"),
   numberOfPeople: yup
     .number()

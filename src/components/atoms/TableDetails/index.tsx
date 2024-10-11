@@ -9,6 +9,7 @@ interface SelectedTable {
   chairs: number;
   status: string;
   type: string;
+  price: number;
 }
 
 // Define the props interface for TableDetails
@@ -184,6 +185,34 @@ const TableDetails: React.FC<TableDetailsProps> = ({ selectedTable }) => {
                 selectedTable.type as keyof typeof tableTypeMapping
               ]
             }
+          </Typography>
+        </Box>
+
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            mb: 1,
+          }}
+        >
+          <Typography
+            sx={{
+              fontSize: "1.3rem",
+              fontFamily: "Raleway, sans-serif",
+              fontWeight: "bold",
+            }}
+          >
+            Price:
+          </Typography>
+          <Typography
+            sx={{
+              fontSize: "1.3rem",
+              fontFamily: "Raleway, sans-serif",
+              fontWeight: "bold",
+            }}
+          >
+            Rs.${selectedTable.price}.00
           </Typography>
         </Box>
       </Box>

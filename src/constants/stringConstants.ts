@@ -17,10 +17,14 @@ export const categories = [
 ];
 
 export const tableTypeMapping = {
-  squareBig: "large (rectangular)",
-  squareMedium: "medium (square)",
-  roundMedium: "medium (round)",
-  roundBig: "large (round)",
-  roundSmall: "small (round)",
-  rectangle: "medium (rectangular)",
+  squareBig: "Large Family Table",
+  squareMedium: "Couple Table",
+  roundMedium: "Mini Family Table",
+  roundBig: "Budget Family Table",
+  rectangle: "Special Table",
 };
+
+export const paymentOptions = [
+  { value: "payLater", label: "Pay Later" },
+  { value: "payByCard", label: "Pay By Card" },
+];

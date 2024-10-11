@@ -22,12 +22,13 @@ import PersonalDetailsForm from "../../organisms/PersonalDetailsForm";
 import TableSetup from "../../organisms/TableSetup";
 import { steps } from "../../../constants/stringConstants";
 import MenuItems from "../../organisms/MenuItems";
-import MenuDialog from "../../atoms/MenuDialogPopup";
-import CartPopup from "../../atoms/CartItemPopup";
+import MenuDialog from "../../atoms/ConfirmationDialogPopup";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import { FormData } from "../../organisms/PersonalDetailsForm";
 import TableDetails from "../../atoms/TableDetails";
+
+import PaymentPage from "../../organisms/PaymentDetails";
 
 const slides = [{ src: Image1 }, { src: Image2 }, { src: Image3 }];
 
@@ -51,18 +52,9 @@ const BookNowPage: React.FC = () => {
   const [selectedMenuItems, setSelectedMenuItems] = useState<any[]>([]);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [quantities, setQuantities] = useState<{ [key: number]: number }>({});
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [isCartPopupOpen, setIsCartPopupOpen] = useState(false);
   const [isDateTimeConfirmed, setIsDateTimeConfirmed] = useState(false);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
-  const handleNextMenu = () => {
-    const hasItemsInCart = Object.values(quantities).some(
-      (quantity) => quantity > 0
-    );
-    if (!hasItemsInCart) {
-      setIsDialogOpen(true);
-    }
-  };
   const handleNextStep = () => {
     if (currentStep === 0) {
       if (currentStep < steps.length - 1) {
@@ -83,8 +75,12 @@ const BookNowPage: React.FC = () => {
         if (currentStep < steps.length - 1) {
           setCurrentStep(currentStep + 1);
         }
-      } else {
-        handleNextMenu();
+      } else if (selectedMenuItems.length === 0) {
+        setIsDialogOpen(true);
+      }
+    } else if (currentStep === 4) {
+      if (currentStep < steps.length - 1) {
+        setCurrentStep(currentStep + 1);
       }
     }
   };
@@ -100,28 +96,19 @@ const BookNowPage: React.FC = () => {
     setPersonalDetails(details);
   };
 
-  const handleMenuNext = () => {
-    if (selectedMenuItems.length > 0) {
-      handleNextStep();
-    } else {
-    }
+  const handleMenuItemsChange = (items: any[]) => {
+    setSelectedMenuItems(items);
+
+    console.log(selectedMenuItems);
   };
+
   const handleDialogConfirm = () => {
     setIsDialogOpen(false);
-    handleNextStep();
+    setCurrentStep(currentStep + 1);
   };
 
   const handleDialogCancel = () => {
     setIsDialogOpen(false);
-  };
-
-  const handleCartPopupProceed = () => {
-    setIsCartPopupOpen(false);
-    handleNextStep(); // Proceed to the next step
-  };
-
-  const handleCartPopupEdit = () => {
-    setIsCartPopupOpen(false); // Close the cart popup to edit items
   };
 
   return (
@@ -214,7 +201,7 @@ const BookNowPage: React.FC = () => {
 
                 borderRadius: "8px",
                 left: "68%",
-                top: "28%",
+                top: "25%",
 
                 width: "fit-content",
               }}
@@ -226,11 +213,21 @@ const BookNowPage: React.FC = () => {
         {currentStep === 3 && (
           <Box sx={tableDetailsContainer}>
             <MenuItems
-              selectedItems={selectedMenuItems}
-              onSelect={(item) =>
-                setSelectedMenuItems((prev) => [...prev, item])
-              }
-              onNext={handleMenuNext}
+              onMenuItemsChange={handleMenuItemsChange}
+              selectedMenuItems={selectedMenuItems}
+            />
+          </Box>
+        )}
+        {currentStep === 4 && (
+          <Box sx={tableDetailsContainer}>
+            <PaymentPage
+              selectedDate={selectedDate?.format("YYYY-MM-DD") || ""}
+              startTime={startTime}
+              endTime={endTime}
+              personalDetails={personalDetails}
+              selectedTable={selectedTable}
+              selectedMenuItems={selectedMenuItems}
+              handleNextStep={handleNextStep}
             />
           </Box>
         )}
@@ -250,94 +247,79 @@ const BookNowPage: React.FC = () => {
             mr: 5,
           }}
         >
-          {currentStep > 0 && (
-            <Button
-              variant="contained"
-              onClick={handlePreviousStep}
-              sx={{
-                backgroundColor: "white",
-                color: "black",
-                border: "1px solid gray",
-                borderRadius: "8px",
-                textTransform: "none",
-                fontSize: "16px",
-                "&:hover": {
-                  backgroundColor: "white", // Same as default
-                  color: "black", // Same as default
-                  border: "1px solid gray", // Same as default // Optional: Change to your desired hover border color
-                },
-              }}
-            >
-              <ArrowBackIcon sx={{ fontSize: "20px", marginRight: "4px" }} />
-              Previous
-            </Button>
-          )}
-          <Button
-            variant="contained"
-            onClick={handleNextStep}
-            disabled={
-              (currentStep === 0 && !isDateTimeConfirmed) ||
-              (currentStep === 1 &&
-                (!personalDetails.firstName ||
-                  !personalDetails.lastName ||
-                  !personalDetails.phoneNumber ||
-                  personalDetails.numberOfPeople <= 0)) ||
-              (currentStep === 2 &&
-                (!selectedTable || selectedTable.status === "Seated")) ||
-              (currentStep === 3 && selectedMenuItems.length === 0)
-            }
-            sx={{
-              ml: 1,
-              backgroundColor: "darkorange",
-              border: "1px solid gray",
-              borderRadius: "8px",
-              textTransform: "none",
-              fontSize: "16px",
-              "&:hover": {
-                backgroundColor: "darkorange", // Same as default
+          {currentStep !== 5 && (
+            <>
+              {currentStep > 0 && (
+                <Button
+                  variant="contained"
+                  onClick={handlePreviousStep}
+                  sx={{
+                    backgroundColor: "white",
+                    color: "black",
+                    border: "1px solid gray",
+                    borderRadius: "8px",
+                    textTransform: "none",
+                    fontSize: "16px",
+                    "&:hover": {
+                      backgroundColor: "white", // Same as default
+                      color: "black", // Same as default
+                      border: "1px solid gray", // Same as default // Optional: Change to your desired hover border color
+                    },
+                  }}
+                >
+                  <ArrowBackIcon
+                    sx={{ fontSize: "20px", marginRight: "4px" }}
+                  />
+                  Previous
+                </Button>
+              )}
 
-                border: "1px solid gray", // Same as default // Optional: Change to your desired hover border color
-              },
-            }}
-          >
-            {currentStep === steps.length - 1 ? (
-              "Finish"
-            ) : (
-              <>
-                Next
-                <ArrowForwardIcon
-                  sx={{ fontSize: "20px", marginLeft: "4px" }}
-                />{" "}
-                {/* Only for "Next" */}
-              </>
-            )}
-          </Button>
+              {/* Show Next button only when currentStep is not 4 */}
+              {currentStep !== 4 && (
+                <Button
+                  variant="contained"
+                  onClick={handleNextStep}
+                  disabled={
+                    (currentStep === 0 && !isDateTimeConfirmed) ||
+                    (currentStep === 1 &&
+                      (!personalDetails.firstName ||
+                        !personalDetails.lastName ||
+                        !personalDetails.phoneNumber ||
+                        personalDetails.numberOfPeople <= 0)) ||
+                    (currentStep === 2 &&
+                      (!selectedTable || selectedTable.status === "Seated"))
+                  }
+                  sx={{
+                    ml: 1,
+                    backgroundColor: "darkorange",
+                    border: "1px solid gray",
+                    borderRadius: "8px",
+                    textTransform: "none",
+                    fontSize: "16px",
+                    "&:hover": {
+                      backgroundColor: "darkorange",
+                      border: "1px solid gray",
+                    },
+                  }}
+                >
+                  Next
+                  <ArrowForwardIcon
+                    sx={{ fontSize: "20px", marginLeft: "4px" }}
+                  />
+                </Button>
+              )}
+            </>
+          )}
         </Box>
       </Box>
-
       <Footer />
 
       <MenuDialog
+        text="Your cart is empty. Do you really want to continue without adding any menu items?"
+        label="Proceed"
         isDialogOpen={isDialogOpen}
         handleDialogCancel={handleDialogCancel}
         handleDialogConfirm={handleDialogConfirm}
-      />
-
-      <CartPopup
-        isCartPopupOpen={isCartPopupOpen}
-        onClose={() => setIsCartPopupOpen(false)}
-        items={Object.entries(quantities)
-          .filter(([_, quantity]) => quantity > 0)
-          .map(([itemId, quantity]) => {
-            const item = selectedMenuItems.find((i) => i.id === Number(itemId));
-            return {
-              name: item.name,
-              price: item.price,
-              quantity: quantity,
-            };
-          })}
-        onProceed={handleCartPopupProceed}
-        onEdit={handleCartPopupEdit}
       />
     </Box>
   );

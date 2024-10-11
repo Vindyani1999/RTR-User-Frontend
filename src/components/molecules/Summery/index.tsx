@@ -45,7 +45,7 @@ const Summary: React.FC<SummaryProps> = ({
   const iconStyle = { marginRight: "8px" };
 
   return (
-    <Box sx={{ maxWidth: "400px", mt: 6, ml: 4 }}>
+    <Box sx={{ mt: 6, ml: 4 }}>
       <Box
         sx={{
           background: "linear-gradient(to right, orange, darkred)", // Use "background" instead of "backgroundColor"

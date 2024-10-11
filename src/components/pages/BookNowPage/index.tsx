@@ -27,7 +27,7 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import { FormData } from "../../organisms/PersonalDetailsForm";
 import TableDetails from "../../atoms/TableDetails";
-
+import Confirmation from "../../organisms/Confirmation";
 import PaymentPage from "../../organisms/PaymentDetails";
 
 const slides = [{ src: Image1 }, { src: Image2 }, { src: Image3 }];
@@ -229,6 +229,11 @@ const BookNowPage: React.FC = () => {
               selectedMenuItems={selectedMenuItems}
               handleNextStep={handleNextStep}
             />
+          </Box>
+        )}
+        {currentStep === 5 && (
+          <Box sx={tableDetailsContainer}>
+            <Confirmation />
           </Box>
         )}
         <Box sx={errorStyle}>

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Box, Grid, Typography, TextField, Button } from "@mui/material";
+import { Box, Grid, Typography, TextField, Divider } from "@mui/material";
 import Summary from "../../molecules/Summery"; // Import the summary component
 import { FormData } from "../../organisms/PersonalDetailsForm";
 import { jsPDF } from "jspdf";
@@ -7,6 +7,7 @@ import logo from "../../../assets/icons/Logo/logo.png";
 import { paymentOptions } from "../../../constants/stringConstants";
 import { tableTypeMapping } from "../../../constants/stringConstants";
 import ConfirmationDialogPopup from "../../atoms/ConfirmationDialogPopup";
+import CustomButton from "../../atoms/CustomButton";
 
 // Interface for payment details
 interface PaymentDetails {
@@ -183,9 +184,7 @@ const PaymentPage: React.FC<PaymentPageProps> = ({
     }
 
     const totalCostText = `Total Cost: Rs.${totalCost}.00`;
-    const finalTotalCostText = `Final Amount: Rs.${finalTotalCost.toFixed(
-      2
-    )}.00`;
+    const finalTotalCostText = `Final Amount: Rs.${finalTotalCost.toFixed(2)}`;
     const totalCostWidth = doc.getTextWidth(totalCostText);
     const finalTotalCostWidth = doc.getTextWidth(finalTotalCostText);
 
@@ -216,10 +215,17 @@ const PaymentPage: React.FC<PaymentPageProps> = ({
     setIsDialogOpen(true);
   };
   return (
-    <Box sx={{ padding: 4, display: "flex", flexDirection: "column" }}>
-      <Grid container spacing={4}>
+    <Box
+      sx={{
+        padding: 4,
+        display: "flex",
+        flexDirection: "column",
+        maxHeight: "50vh",
+      }}
+    >
+      <Grid container>
         {/* Left side - Summary */}
-        <Grid item xs={12} md={4}>
+        <Grid item sx={{ flexBasis: "28%", mr: 4 }}>
           <Summary
             selectedDate={selectedDate}
             startTime={startTime}
@@ -230,34 +236,77 @@ const PaymentPage: React.FC<PaymentPageProps> = ({
           />
         </Grid>
 
-        <Grid item xs={12} md={4}>
+        <Grid item sx={{ flexBasis: "33%" }}>
           {/* Pay Later Option */}
-          <Box sx={{ mb: 4, bgcolor: "#bfbebe", p: 3, mt: 8 }}>
-            <Typography variant="h6">Pay Later</Typography>
-            <Typography sx={{ mb: 2 }}>
-              Download the receipt and bring it when you visit.
-            </Typography>
-            <Button
-              variant="contained"
-              color="secondary"
-              onClick={handleOpenDialog}
-              sx={{ width: "100%" }}
+          <Box sx={{ mb: 4, bgcolor: "#d4d3d3", p: 3, mt: 7 }}>
+            <Typography
+              variant="h6"
+              sx={{
+                position: "absolute",
+                top: "34%",
+                bgcolor: "#d4d3d3",
+                left: "34%",
+                px: 0.4,
+              }}
             >
-              Confirm
-            </Button>
+              Pay Later
+            </Typography>
+            <Divider
+              orientation="vertical"
+              flexItem
+              sx={{
+                height: "100%",
+                borderColor: "black",
+                borderWidth: "1px",
+                mt: 1,
+              }}
+            />
+
+            <Typography sx={{ mb: 2, mt: 5 }}>
+              Choosing the Pay Later option will incur an additional 10% charge
+              for your reservation. Please bring the downloaded receipt when you
+              visit.
+            </Typography>
+            <Box sx={{ textAlign: "center" }}>
+              <CustomButton label="Confirm" onClick={handleOpenDialog} />
+            </Box>
           </Box>
 
           {/* Pay by Card Option */}
         </Grid>
-        <Grid item xs={12} md={4}>
-          <Box sx={{ bgcolor: "#bfbebe", p: 3 }}>
-            <Typography variant="h6" gutterBottom>
+        <Grid item sx={{ flexBasis: "2%", textAlign: "cenetr", ml: 2 }}>
+          <Box sx={{ alignItems: "center", mt: 11 }}>Or</Box>
+        </Grid>
+        <Grid item sx={{ flexBasis: "33%" }}>
+          <Box sx={{ bgcolor: "#d4d3d3", p: 3, mt: 7 }}>
+            <Typography
+              variant="h6"
+              gutterBottom
+              sx={{
+                position: "absolute",
+                top: "34%",
+                bgcolor: "#d4d3d3",
+                right: "24%",
+                px: 0.4,
+              }}
+            >
               Pay by Card
             </Typography>
+            <Divider
+              orientation="vertical"
+              flexItem
+              sx={{
+                height: "100%",
+                borderColor: "black",
+                borderWidth: "1px",
+                mt: 1,
+              }}
+            />
             <Box
               component="form"
               onSubmit={() => handlePaymentSubmit("payByCard")}
               noValidate
+              sx={{ pt: 4 }}
             >
               <TextField
                 label="Card Number"
@@ -299,16 +348,11 @@ const PaymentPage: React.FC<PaymentPageProps> = ({
                 </Grid>
               </Grid>
 
-              <Box sx={{ textAlign: "right", mt: 4 }}>
-                <Button
-                  type="button"
-                  variant="contained"
-                  color="primary"
+              <Box sx={{ textAlign: "center", mt: 4 }}>
+                <CustomButton
+                  label="Pay Now"
                   onClick={() => handlePaymentSubmit(paymentOptions[1].value)}
-                  sx={{ width: "100%" }}
-                >
-                  Submit Payment
-                </Button>
+                />
               </Box>
             </Box>
           </Box>

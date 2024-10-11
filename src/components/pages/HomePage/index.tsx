@@ -8,7 +8,7 @@ import Image1 from "../../../assets/icons/HomePage/home.png";
 import Image2 from "../../../assets/icons/HomePage/home6.jpg";
 import Image3 from "../../../assets/icons/HomePage/home3.jpeg";
 import { homePageContainer } from "./styles";
-import AboutSection from "../../molecules/AboutUsSection";
+import FeatureContainer from "../../organisms/FeatureContainer";
 
 const slides = [{ src: Image1 }, { src: Image2 }, { src: Image3 }];
 
@@ -29,9 +29,9 @@ const HomePage: React.FC = () => {
         overlayDescription={overlayDescriptionText}
         buttonText={buttonText}
       />
-      <Box>
-        <AboutSection />
-      </Box>
+
+      <FeatureContainer />
+
       <Footer />
     </Box>
   );

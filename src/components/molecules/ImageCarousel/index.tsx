@@ -10,6 +10,7 @@ import {
   overlayDescriptionStyle,
   overlayButtonContainer,
 } from "./styles";
+import { ROUTES } from "../../../constants/routeConstants";
 
 export interface CarouselSlide {
   src: string;
@@ -58,7 +59,9 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({
   };
 
   return (
-    <Box sx={{ position: "relative" }}>
+    <Box
+      sx={{ overflowX: "hidden", position: "relative", overflowY: "hidden" }}
+    >
       <Carousel>
         {slides.map((slide, index) => (
           <Box
@@ -104,7 +107,7 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({
 
         {isHomePage && (
           <Box sx={overlayButtonContainer}>
-            <Link underline="none">
+            <Link underline="none" href={ROUTES.DATE_TIME}>
               <Typography sx={overlayButton}>{buttonText}</Typography>
             </Link>
           </Box>

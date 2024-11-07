@@ -24,6 +24,7 @@ const FeaturePage: React.FC = () => {
       <Navbar />
       <ImageCarousel
         isHomePage={false}
+        isBookNowPage={false}
         slides={slides}
         overlayText={overlayText}
         overlayDescription={overlayDescriptionText}

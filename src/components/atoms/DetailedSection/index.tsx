@@ -14,14 +14,16 @@ import {
 } from "./style";
 
 interface DetailedSectionProps {
-  title: string;
+  titleFront: string;
+  titleBack: string;
   description: string;
   imageUrl: string;
   isFlipped: boolean; // New prop for flipping
 }
 
 const DetailedSection: React.FC<DetailedSectionProps> = ({
-  title,
+  titleFront,
+  titleBack,
   description,
   imageUrl,
   isFlipped,
@@ -35,14 +37,38 @@ const DetailedSection: React.FC<DetailedSectionProps> = ({
         }}
       >
         <Box sx={textContainer}>
-          <Typography
+          <Box
             sx={{
-              ...titleText,
+              display: "flex", // Use flexbox for alignment
+              alignItems: "center", // Align items vertically centered
               ml: isFlipped ? 0 : { xs: 3, sm: 5, md: 8, lg: 10, xl: 10 },
+              textAlign: "center",
+              justifyContent: "center",
             }}
           >
-            {title}
-          </Typography>
+            <Typography
+              sx={{
+                ...titleText,
+              }}
+            >
+              {titleFront}
+            </Typography>
+            <Typography sx={{ mx: 1 }} />
+
+            <Typography
+              sx={{
+                ...titleText,
+
+                backgroundImage: "linear-gradient(to right, orange, darkred)",
+                backgroundClip: "text",
+                WebkitBackgroundClip: "text",
+                color: "transparent",
+                fontWeight: "bold",
+              }}
+            >
+              {titleBack}
+            </Typography>
+          </Box>
 
           <Container maxWidth="lg">
             <Box

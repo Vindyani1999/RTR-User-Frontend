@@ -10,6 +10,7 @@ import {
   overlayDescriptionStyle,
   overlayButtonContainer,
 } from "./styles";
+import { ROUTES } from "../../../constants/routeConstants";
 
 export interface CarouselSlide {
   src: string;
@@ -21,6 +22,7 @@ interface ImageCarouselProps {
   overlayDescription: string;
   buttonText: string;
   isHomePage: boolean;
+  isBookNowPage: boolean;
 }
 
 const ImageCarousel: React.FC<ImageCarouselProps> = ({
@@ -29,6 +31,7 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({
   overlayDescription,
   buttonText,
   isHomePage,
+  isBookNowPage,
 }) => {
   const handleArrowClick = () => {
     window.scrollBy({
@@ -39,6 +42,8 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({
 
   const carouselHeight = isHomePage
     ? { xs: "180px", sm: "450px", md: "600px", lg: "710px", xl: "770px" }
+    : isBookNowPage
+    ? { xs: "100px", sm: "200px", md: "250px", lg: "200px", xl: "200px" }
     : { xs: "100px", sm: "200px", md: "250px", lg: "300px", xl: "300px" };
 
   const overlayTextSize = isHomePage
@@ -54,7 +59,9 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({
   };
 
   return (
-    <Box sx={{ position: "relative" }}>
+    <Box
+      sx={{ overflowX: "hidden", position: "relative", overflowY: "hidden" }}
+    >
       <Carousel>
         {slides.map((slide, index) => (
           <Box
@@ -100,7 +107,7 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({
 
         {isHomePage && (
           <Box sx={overlayButtonContainer}>
-            <Link underline="none">
+            <Link underline="none" href={ROUTES.DATE_TIME}>
               <Typography sx={overlayButton}>{buttonText}</Typography>
             </Link>
           </Box>

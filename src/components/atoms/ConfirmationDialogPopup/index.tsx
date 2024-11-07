@@ -26,7 +26,7 @@ const MenuDialog: React.FC<MenuDialogProps> = ({
 }) => {
   return (
     <Dialog open={isDialogOpen} onClose={handleDialogCancel} maxWidth="xs">
-      <DialogTitle>{"Proceed Without Menu Items?"}</DialogTitle>
+      <DialogTitle>{"Do you want to proceed?"}</DialogTitle>
       <DialogContent>
         <DialogContentText>{text}</DialogContentText>
       </DialogContent>

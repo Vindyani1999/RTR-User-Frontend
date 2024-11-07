@@ -224,9 +224,16 @@ const BookNowPage: React.FC = () => {
               selectedDate={selectedDate?.format("YYYY-MM-DD") || ""}
               startTime={startTime}
               endTime={endTime}
-              personalDetails={personalDetails}
-              selectedTable={selectedTable}
-              selectedMenuItems={selectedMenuItems}
+              firstName={personalDetails.firstName}
+              lastName={personalDetails.lastName}
+              phoneNumber={personalDetails.phoneNumber}
+              address={personalDetails.address}
+              numberOfPeople={personalDetails.numberOfPeople}
+              tableNumber={selectedTable?.tableNumber || 0}
+              numberOfChairs={selectedTable?.numberOfChairs || 0}
+              tableType={selectedTable?.tableType || ""}
+              tablePrice={selectedTable?.tablePrice || 0}
+              cartItems={selectedMenuItems}
               handleNextStep={handleNextStep}
             />
           </Box>

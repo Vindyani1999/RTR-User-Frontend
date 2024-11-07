@@ -115,6 +115,8 @@ const MenuItems: React.FC<MenuItemsProps> = ({
 
     setCartItems(updatedCartItems); // Update cartItems state first
     onMenuItemsChange(updatedCartItems); // Then, call onMenuItemsChange with the updated cart items
+
+    console.log(updatedCartItems);
   };
 
   useEffect(() => {

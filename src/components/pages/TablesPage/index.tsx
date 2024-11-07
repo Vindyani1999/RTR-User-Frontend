@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Box, Button } from "@mui/material";
+import { Box } from "@mui/material";
 import Navbar from "../../molecules/mainNavbar";
 import Footer from "../../molecules/Footer";
 import ImageCarousel from "../../molecules/ImageCarousel";

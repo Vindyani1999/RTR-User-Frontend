@@ -1,13 +1,18 @@
 import React, { useState } from "react";
 import { Box, Grid, Typography, TextField, Divider } from "@mui/material";
 import Summary from "../../molecules/Summery"; // Import the summary component
-import { FormData } from "../../organisms/PersonalDetailsForm";
+//import { FormData } from "../../organisms/PersonalDetailsForm";
 import { jsPDF } from "jspdf";
 import logo from "../../../assets/icons/Logo/logo.png";
 import { paymentOptions } from "../../../constants/stringConstants";
 import { tableTypeMapping } from "../../../constants/stringConstants";
 import ConfirmationDialogPopup from "../../atoms/ConfirmationDialogPopup";
 import CustomButton from "../../atoms/CustomButton";
+import { createBookingAction } from "../../../redux/action/bookingAction"; // Import the createBookingAction
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "@/redux/store";
+//import { BookingDataType } from "../../../constants/types/bookingDataType";
+//import { RootState } from "@/redux/store";
 
 // Interface for payment details
 interface PaymentDetails {
@@ -17,12 +22,26 @@ interface PaymentDetails {
 }
 
 interface PaymentPageProps {
-  selectedDate: string | null;
+  selectedDate: string;
   startTime: string | null;
   endTime: string | null;
-  personalDetails: FormData;
-  selectedTable: any;
-  selectedMenuItems: any[];
+
+  firstName: string;
+  lastName: string;
+  phoneNumber: string;
+  address: string;
+  numberOfPeople: number;
+  tableNumber: number;
+  numberOfChairs: number;
+
+  tableType: string;
+  tablePrice: number;
+  cartItems: {
+    id: number;
+    name: string;
+    quantity: number;
+    price: number;
+  }[];
   handleNextStep: () => void;
 }
 
@@ -30,11 +49,21 @@ const PaymentPage: React.FC<PaymentPageProps> = ({
   selectedDate,
   startTime,
   endTime,
-  personalDetails,
-  selectedTable,
-  selectedMenuItems,
+  firstName,
+  lastName,
+  phoneNumber,
+  address,
+  numberOfPeople,
+  tableNumber,
+  numberOfChairs,
+  tableType,
+  tablePrice,
+  cartItems,
   handleNextStep,
 }) => {
+  const dispatch = useDispatch<AppDispatch>();
+  //const bookingState = useSelector((state: RootState) => state.booking);
+
   const [paymentDetails, setPaymentDetails] = useState<PaymentDetails>({
     cardNumber: "",
     expiryDate: "",
@@ -67,7 +96,24 @@ const PaymentPage: React.FC<PaymentPageProps> = ({
 
     // Proceed with PDF generation if Pay Later
     if (selectedPaymentOption === "payLater") {
-      handleOpenDialog(); // Show confirmation dialog for Pay Later
+      const bookingData = {
+        selectedDate,
+        startTime,
+        endTime,
+        firstName,
+        lastName,
+        phoneNumber,
+        address,
+        numberOfPeople,
+        tableNumber,
+        numberOfChairs,
+        tableType,
+        tablePrice,
+        cartItems,
+      };
+
+      dispatch(createBookingAction(bookingData));
+      handleOpenDialog();
     }
   };
 
@@ -99,7 +145,7 @@ const PaymentPage: React.FC<PaymentPageProps> = ({
     doc.line(20, 40, 190, 40);
 
     const text1 = "Table NO";
-    const text2 = `${selectedTable.id || "N/A"}`;
+    const text2 = `${tableNumber || "N/A"}`;
 
     const x = 40;
     const y1 = 55;
@@ -130,26 +176,17 @@ const PaymentPage: React.FC<PaymentPageProps> = ({
     doc.line(20, 87, 190, 87);
     doc.setFontSize(12);
     doc.setFont("helvetica", "normal");
-    doc.text(
-      `Name: ${personalDetails.firstName} ${personalDetails.lastName}`,
-      20,
-      95
-    );
-    doc.text(`Phone: ${personalDetails.phoneNumber}`, 20, 105);
-    doc.text(
-      `Number of People: ${personalDetails.numberOfPeople || "N/A"}`,
-      20,
-      115
-    );
+    doc.text(`Name: ${firstName} ${lastName}`, 20, 95);
+    doc.text(`Phone: ${phoneNumber}`, 20, 105);
+    doc.text(`Number of People: ${numberOfPeople || "N/A"}`, 20, 115);
     doc.text(
       `Table Type: ${
-        tableTypeMapping[selectedTable.type as keyof typeof tableTypeMapping] ||
-        "N/A"
+        tableTypeMapping[tableType as keyof typeof tableTypeMapping] || "N/A"
       }`,
       20,
       125
     );
-    doc.text(`Table Price: Rs.${selectedTable.price}.00`, 20, 135);
+    doc.text(`Table Price: Rs.${tablePrice}.00`, 20, 135);
 
     doc.setFontSize(14);
     doc.setFont("helvetica", "bold");
@@ -160,7 +197,7 @@ const PaymentPage: React.FC<PaymentPageProps> = ({
     let yPosition = 155;
     doc.setFontSize(12);
     doc.setFont("helvetica", "normal");
-    selectedMenuItems.forEach((item) => {
+    cartItems.forEach((item) => {
       doc.text(
         `${item.name} (x${item.quantity}): Rs.${item.price * item.quantity}.00`,
         20,
@@ -170,11 +207,8 @@ const PaymentPage: React.FC<PaymentPageProps> = ({
     });
 
     const totalCost =
-      selectedTable.price +
-      selectedMenuItems.reduce(
-        (total, item) => total + item.price * item.quantity,
-        0
-      );
+      tablePrice +
+      cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
 
     // Check if payment is "Pay Later" and apply 5% additional charge
     let finalTotalCost = totalCost;
@@ -230,9 +264,16 @@ const PaymentPage: React.FC<PaymentPageProps> = ({
             selectedDate={selectedDate}
             startTime={startTime}
             endTime={endTime}
-            personalDetails={personalDetails}
-            selectedTable={selectedTable}
-            selectedMenuItems={selectedMenuItems}
+            firstName={firstName}
+            lastName={lastName}
+            phoneNumber={phoneNumber}
+            address={address}
+            numberOfPeople={numberOfPeople}
+            tableNumber={tableNumber}
+            numberOfChairs={numberOfChairs}
+            tableType={tableType}
+            tablePrice={tablePrice}
+            cartItems={cartItems}
           />
         </Grid>
 

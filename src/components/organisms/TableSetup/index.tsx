@@ -75,13 +75,18 @@ interface TableProps {
 const TableSetup: React.FC<TableProps> = ({ selectedTable, onTableSelect }) => {
   const location = useLocation(); // Get the current route
 
+  const handleTable = (table: any) => {
+    onTableSelect(table);
+    console.log("selected table", table);
+  };
   return (
     <Box sx={mainContainer}>
       {tables.map((table) => {
-        const isSelected = selectedTable && selectedTable.id === table.id;
+        const isSelected =
+          selectedTable && selectedTable.id === table.tableNumber;
         return (
           <Box
-            key={table.id}
+            key={table.tableNumber}
             sx={{
               ...tableBox,
               position: "absolute",
@@ -90,12 +95,12 @@ const TableSetup: React.FC<TableProps> = ({ selectedTable, onTableSelect }) => {
               cursor: "pointer",
               backgroundColor: "transparent",
             }}
-            onClick={() => onTableSelect(table)}
+            onClick={() => handleTable(table)}
           >
             {getTableSVG(
-              table.type,
+              table.tableType,
               table.status,
-              table.price,
+              table.tablePrice,
               isSelected ?? false,
               location.pathname
             )}

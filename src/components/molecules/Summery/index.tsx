@@ -1,6 +1,5 @@
 import React from "react";
 import { Box, Typography, Divider } from "@mui/material";
-import { FormData } from "../../organisms/PersonalDetailsForm";
 import { tableTypeMapping } from "../../../constants/stringConstants";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
@@ -12,25 +11,44 @@ interface SummaryProps {
   selectedDate: string | null;
   startTime: string | null;
   endTime: string | null;
-  personalDetails: FormData;
-  selectedTable: any;
-  selectedMenuItems: any[];
+  firstName: string;
+  lastName: string;
+  phoneNumber: string;
+  address: string;
+  numberOfPeople: number;
+  tableNumber: number;
+  numberOfChairs: number;
+  tableType: string;
+  tablePrice: number;
+  cartItems: {
+    id: number;
+    name: string;
+    quantity: number;
+    price: number;
+  }[];
 }
 
 const Summary: React.FC<SummaryProps> = ({
   selectedDate,
   startTime,
   endTime,
-  personalDetails,
-  selectedTable,
-  selectedMenuItems,
+  firstName,
+  lastName,
+  phoneNumber,
+  address,
+  numberOfPeople,
+  tableNumber,
+  numberOfChairs,
+  tableType,
+  tablePrice,
+  cartItems,
 }) => {
-  const totalMenuCost = selectedMenuItems.reduce(
+  const totalMenuCost = cartItems.reduce(
     (total, item) => total + item.price * item.quantity,
     0
   );
 
-  const totalBookingCost = selectedTable.price + totalMenuCost;
+  const totalBookingCost = tablePrice + totalMenuCost;
 
   // Custom style for left-right alignment
   const detailRowStyle = {
@@ -96,47 +114,43 @@ const Summary: React.FC<SummaryProps> = ({
         <Box sx={detailRowStyle}>
           <PersonIcon sx={{ ...iconStyle, ml: 2 }} />
           <Typography>
-            {personalDetails.firstName} {personalDetails.lastName}
+            {firstName} {lastName}
           </Typography>
         </Box>
         <Box sx={detailRowStyle}>
           <LocalPhoneIcon sx={{ ...iconStyle, ml: 2 }} />
-          <Typography>{personalDetails.phoneNumber}</Typography>
+          <Typography>{phoneNumber}</Typography>
         </Box>
 
         <Divider sx={{ my: 2 }} />
 
         {/* Table Details Section */}
         <Typography sx={{ fontSize: 18 }}>Table Details</Typography>
-        {selectedTable ? (
+        {tableNumber ? (
           <Box>
             <Box sx={detailRowStyle}>
               <Typography sx={{ ml: 2 }}>Table Number</Typography>
-              <Typography>{selectedTable.id}</Typography>
+              <Typography>{tableNumber}</Typography>
             </Box>
             <Box sx={detailRowStyle}>
               <Typography sx={{ ml: 2 }}>No of Chairs</Typography>
-              <Typography>{selectedTable.chairs}</Typography>
+              <Typography>{numberOfChairs}</Typography>
             </Box>
             <Box sx={detailRowStyle}>
               <Typography sx={{ ml: 2 }}>No of People</Typography>
-              <Typography>{personalDetails.numberOfPeople}</Typography>
+              <Typography>{numberOfPeople}</Typography>
             </Box>
             <Box sx={detailRowStyle}>
               <Typography sx={{ ml: 2 }}>Table Type</Typography>
               <Typography>
-                {
-                  tableTypeMapping[
-                    selectedTable.type as keyof typeof tableTypeMapping
-                  ]
-                }
+                {tableTypeMapping[tableType as keyof typeof tableTypeMapping]}
               </Typography>
             </Box>
 
             <Box sx={detailRowStyle}>
               <LocalOfferIcon sx={{ ...iconStyle, ml: 2 }} />
 
-              <Typography>Rs.{selectedTable.price}.00</Typography>
+              <Typography>Rs.{tablePrice}.00</Typography>
             </Box>
           </Box>
         ) : (
@@ -147,8 +161,8 @@ const Summary: React.FC<SummaryProps> = ({
 
         {/* Selected Menu Items Section */}
         <Typography sx={{ fontSize: 18 }}>Food Items Details</Typography>
-        {selectedMenuItems.length > 0 ? (
-          selectedMenuItems.map((item, index) => (
+        {cartItems.length > 0 ? (
+          cartItems.map((item, index) => (
             <Box key={index} sx={detailRowStyle}>
               <Typography sx={{ ml: 2 }}>{item.name} </Typography>
               <Typography>{item.quantity}</Typography>
@@ -157,7 +171,7 @@ const Summary: React.FC<SummaryProps> = ({
         ) : (
           <Typography>No menu items selected.</Typography>
         )}
-        {selectedMenuItems.length > 0 && (
+        {cartItems.length > 0 && (
           <Box sx={detailRowStyle}>
             <LocalOfferIcon sx={{ ...iconStyle, ml: 2 }} />
 

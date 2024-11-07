@@ -5,11 +5,11 @@ import { slideIn } from "./style";
 
 // Define the type for the selected table object
 interface SelectedTable {
-  id: string;
-  chairs: number;
+  tableNumber: number;
+  tableType: string;
+  tablePrice: number;
+  numberOfChairs: number;
   status: string;
-  type: string;
-  price: number;
 }
 
 // Define the props interface for TableDetails
@@ -77,7 +77,7 @@ const TableDetails: React.FC<TableDetailsProps> = ({ selectedTable }) => {
               fontWeight: "bold",
             }}
           >
-            {selectedTable.id}
+            {selectedTable.tableNumber}
           </Typography>
         </Box>
 
@@ -106,7 +106,7 @@ const TableDetails: React.FC<TableDetailsProps> = ({ selectedTable }) => {
               fontWeight: "bold",
             }}
           >
-            {selectedTable.chairs}
+            {selectedTable.numberOfChairs}
           </Typography>
         </Box>
 
@@ -182,7 +182,7 @@ const TableDetails: React.FC<TableDetailsProps> = ({ selectedTable }) => {
           >
             {
               tableTypeMapping[
-                selectedTable.type as keyof typeof tableTypeMapping
+                selectedTable.tableType as keyof typeof tableTypeMapping
               ]
             }
           </Typography>
@@ -212,7 +212,7 @@ const TableDetails: React.FC<TableDetailsProps> = ({ selectedTable }) => {
               fontWeight: "bold",
             }}
           >
-            Rs.${selectedTable.price}.00
+            Rs.{selectedTable.tablePrice}.00
           </Typography>
         </Box>
       </Box>

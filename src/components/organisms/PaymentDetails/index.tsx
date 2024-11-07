@@ -6,7 +6,7 @@ import { jsPDF } from "jspdf";
 import logo from "../../../assets/icons/Logo/logo.png";
 import { paymentOptions } from "../../../constants/stringConstants";
 import { tableTypeMapping } from "../../../constants/stringConstants";
-import ConfirmationDialogPopup from "../../atoms/ConfirmationDialogPopup";
+//import ConfirmationDialogPopup from "../../atoms/ConfirmationDialogPopup";
 import CustomButton from "../../atoms/CustomButton";
 import { createBookingAction } from "../../../redux/action/bookingAction"; // Import the createBookingAction
 import { useDispatch } from "react-redux";
@@ -69,7 +69,7 @@ const PaymentPage: React.FC<PaymentPageProps> = ({
     expiryDate: "",
     cvv: "",
   });
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  // const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const handlePaymentChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPaymentDetails({
@@ -92,28 +92,6 @@ const PaymentPage: React.FC<PaymentPageProps> = ({
         alert("Please enter a valid 3-digit CVV.");
         return;
       }
-    }
-
-    // Proceed with PDF generation if Pay Later
-    if (selectedPaymentOption === "payLater") {
-      const bookingData = {
-        selectedDate,
-        startTime,
-        endTime,
-        firstName,
-        lastName,
-        phoneNumber,
-        address,
-        numberOfPeople,
-        tableNumber,
-        numberOfChairs,
-        tableType,
-        tablePrice,
-        cartItems,
-      };
-
-      dispatch(createBookingAction(bookingData));
-      handleOpenDialog();
     }
   };
 
@@ -239,15 +217,42 @@ const PaymentPage: React.FC<PaymentPageProps> = ({
     doc.save("Booking_Summary.pdf");
   };
 
-  const handleDialogConfirm = async () => {
-    setIsDialogOpen(false);
-    await handleGeneratePdf(); // Wait for the PDF generation to complete
-    handleNextStep();
+  // const handleDialogConfirm = async () => {
+  //   setIsDialogOpen(false);
+  //   await handleGeneratePdf(); // Wait for the PDF generation to complete
+  //   handleNextStep();
+  // };
+
+  const handleOpenDialog = async () => {
+    const bookingData = {
+      selectedDate,
+      startTime,
+      endTime,
+      firstName,
+      lastName,
+      phoneNumber,
+      address,
+      numberOfPeople,
+      tableNumber,
+      numberOfChairs,
+      tableType,
+      tablePrice,
+      cartItems,
+    };
+
+    try {
+      await dispatch(createBookingAction(bookingData)).unwrap(); // Await the booking action
+      console.log("Booking created successfully:", bookingData);
+
+      await handleGeneratePdf(); // Wait for the PDF generation to complete
+      handleNextStep();
+
+      // setIsDialogOpen(true);
+    } catch (error) {
+      console.error("Failed to create booking:", error);
+    }
   };
 
-  const handleOpenDialog = () => {
-    setIsDialogOpen(true);
-  };
   return (
     <Box
       sx={{
@@ -399,13 +404,13 @@ const PaymentPage: React.FC<PaymentPageProps> = ({
           </Box>
         </Grid>
       </Grid>
-      <ConfirmationDialogPopup
+      {/* <ConfirmationDialogPopup
         text="Are you sure you want to pay later? It will be charged extra 10% on the total amount."
         label="Ok"
         isDialogOpen={isDialogOpen}
         handleDialogCancel={() => setIsDialogOpen(false)}
         handleDialogConfirm={handleDialogConfirm}
-      />
+      /> */}
     </Box>
   );
 };
